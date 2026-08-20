@@ -91,7 +91,7 @@ acs-*.bib
 
 # fixme
 *.lox
-
+*.pdf
 # feynmf/feynmp
 *.mf
 *.mp
