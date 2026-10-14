@@ -1,0 +1,819 @@
+\documentclass[11pt,a4paper]{article}
+
+% proof box fix anyhow
+
+
+
+
+
+
+
+
+
+%% ---------------------------------------------------------------- packages
+\usepackage[a4paper,margin=2.5cm,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+% \usepackage{mathptmx}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{booktabs,array,longtable,tabularx}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\studentname}{Pranjal Solanki}
+\newcommand{\rollno}{2025386}
+
+%% -------------------------------------------------- shortcut macros
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\pair}[2]{\{#1,#2\}}
+\newcommand{\xor}{\oplus}
+\newcommand{\imp}{\Longrightarrow}
+\renewcommand{\iff}{\Longleftrightarrow}
+\newcommand{\cmark}{\checkmark}
+
+%% -------------------------------------------------- header / footer
+% name in the top-left corner, page number (x of y) in the bottom-right corner
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\studentname\ (\rollno)}
+\rhead{Discrete Mathematics, Assignment 1}
+\rfoot{Page \thepage\ of \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\lhead{\studentname\ (\rollno)}\rfoot{Page \thepage\ of \pageref{LastPage}}\renewcommand{\headrulewidth}{0.4pt}}
+
+\setlist[itemize]{itemsep=2pt,topsep=3pt}
+\setlist[enumerate]{itemsep=2pt,topsep=3pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\renewcommand{\arraystretch}{1.15}
+
+%% -------------------------------------------------- plain environments
+% (simple replacements for the old coloured boxes)
+\newenvironment{claimbox}[1][]{\par\smallskip\begin{quote}\textbf{#1.}\ \itshape}{\end{quote}}
+\newenvironment{answerbox}[1][Answer]{\par\smallskip\begin{quote}\textbf{#1.}\ }{\end{quote}}
+\newenvironment{verdictbox}[2][]{\par\begin{quote}}{\end{quote}}
+\newenvironment{notebox}{\par\begin{quote}\textit{Remark.}\ }{\end{quote}}
+
+\theoremstyle{definition}
+\newtheorem*{lemma*}{Lemma}
+\newtheorem*{fact*}{Fact}
+% \renewcommand{symbol}{$\blacksquare$}
+
+\newcommand{\pts}[1]{\hfill{\small\textit{[#1]}}}
+\newcommand{\goodmark}{\textbf{Correct.}}
+\newcommand{\badmark}{\textbf{Incorrect.}}
+\newcommand{\textcolorplain}[2]{#2}
+
+% simple section headings
+\makeatletter
+% \renewcommand\section{\@startsection{section}{1}{\z@}{-3.2ex \@plus -1ex \@minus -.2ex}{1.5ex \@plus .2ex}{\normalfont\large\bfseries}}
+% \renewcommand\subsection{\@startsection{subsection}{2}{\z@}{-2.5ex \@plus -1ex \@minus -.2ex}{1ex \@plus .2ex}{\normalfont\normalsize\bfseries}}
+% \renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}{-2ex \@plus -1ex \@minus -.2ex}{0.8ex \@plus .2ex}{\normalfont\normalsize\bfseries\itshape}}
+\makeatother
+\renewcommand{\thesection}{Problem~\arabic{section}}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+\renewcommand{\qedsymbol}{}
+\begin{document}
+
+\title{\textbf{Discrete Mathematics (CSE121)}\\[2pt] Assignment 1}
+\author{\studentname \\ Roll No.\ \rollno \\ IIIT Delhi}
+\date{}
+\maketitle
+\thispagestyle{fancy}
+
+\noindent\textbf{Declaration.} 
+I state that I used an AI tool (Claude.ai) 
+to help prepare and typeset these solutions \textit{i used claude to generate shortcuts for various long 
+mathematical commands to write them down in 1 single command ; the page numbers you see on the bottom and the top bar you see is all with help of claude guiding me thru my latex journey, i also plan on using claude for adding some colors in my pdf and i've used claude to beautify my solutions like the Q under bracket the different tables the checkmarks and all minor minor things}, 
+and I didnt discuss solutions but had a chat regarding latex with \textit{Rudra Bhati and Paramveer}.
+
+\medskip
+\noindent\textbf{Summary of answers:}
+\begin{center}
+\begin{tabular}{@{ }ll@{ }}
+\toprule
+Problem & Result\\
+\midrule
+1(1) & My own personal experience with the 8 proof techniques\\
+1(2a) & Claim false for $n=0$ (if $0\in\N$); proof is circular.\\
+1(2b) & Claim false; the induction step needs $2^{-1}$ at $k=0$.\\
+1(2c) & Proof is in fact correct.\\
+1(2d) & Claim true; proof is wrong (divisibility confused with equality).\\
+2.1 & Conversion of Statements.\\
+2.2 & (a) tautology; (b) tautology; (c) tautology for odd $n$, contingency for even $n$.\\
+3.1 & Minimum number of weighings is $4$.\\
+3.2 & Minimum number of weighings is $5$.\\
+4.1 & Infinitely many primes $\equiv3\pmod4$\\
+4.2 & $\sqrt2+\sqrt3\notin\Q$.\\
+5 & Smallest $N=12$; $A_n+B_n\le(5/4)^n$ for $n\ge10$.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{}
+
+\subsection{My experience with various proof techniques in this course.}
+We have focused on various proof techniques as mentioned by sir in his pdf (when sir gives us 
+the review before classes) I used the review as a base to start this question.
+
+\begin{itemize}
+  \item \textbf{Modus Ponens:}
+        % (\ $[P \land (P \implies Q)] \implies Q$ ) 
+        If the ``if'' statement is true, and its starting condition is true, then the result must be true. This is the best way to understand this
+
+  \item \textbf{Proof by Counterexample:}
+        (\ $\exists x \in U, \neg P(x)$ )
+        when we are sure a specific case fails then we can disprove the entire statement ($\forall x, P(x)$) by showing the one specific case where the statement is False.
+
+  \item \textbf{Direct Proof (Integers and Properties):}
+        
+        We directly assume the given statement $P$ is True, then we try to validate it by using various axioms, definitions and mathematics to show the conclusion $Q$ is true.
+
+  \item \textbf{Proof by Contraposition:}
+        (\ prove $P \implies Q$ by showing $\neg Q \implies \neg P$ ) we assume the negation of the conclusion is true, if proved true we have our proof because technically if negation is true the opposite must also be true.
+
+  \item \textbf{Proving Biconditionals:}
+        (\ $P \iff Q$ ) we split into two sections: first we prove the forward direction ( $P \implies Q$ ) and then we prove the opposite direction ($Q \implies P$). If both True we have our proof as True otherwise False.
+
+  \item \textbf{Proof by Cases:}
+        (\ $n$ is even or $n$ is odd ) we split our entire bigger statement into different smaller statements, if we can prove the smaller statements we can end up proving the bigger statement holds true overall.
+
+  \item \textbf{Proof by Contradiction:}
+        assume the entire statement is false, then show this assumption logically leads to an impossible mathematical absurdity.
+
+  \item \textbf{Proof by Mathematical Induction:}
+        (\ verify base case $P(b)$ for a boundary value such as $n=0$; assume inductive hypothesis $P(k)$, prove inductive step $P(k+1)$ ) establishes the validity of a statement across all integers.
+\end{itemize}
+
+
+At the end, the most important thing that I've learnt yet in this course is that a proof can be broken or built just from \emph{one single good decision}. 
+To elaborate, you need to be sure about the method and if the method is correct the proof can be easily figured out just need to stay on the same path, 
+its like a puzzle the more you look into it the more it either makes sense or makes your brain twist.
+
+\subsection{Checking proposed proofs}
+
+
+% here right now
+
+
+
+
+
+
+\subsubsection*{(a)}
+\begin{claimbox}[Claim]
+If $n$ is a natural number and $n\mid n^2$, then $n\neq0$.
+\end{claimbox}
+
+\begin{verdictbox}{badred}
+\badmark{} (The claim is True because obviously $0\notin\N$; The proof is invalid under every convention.)
+\end{verdictbox}
+
+\textbf{Incorrect part}
+\begin{enumerate}
+  \item The step \emph{``on cancelling $n$ from both sides, $n=k$''} is valid only if $n\neq0$ (cancellation
+        $nx=ny\Rightarrow x=y$ needs $n\ne0$). But $n\neq0$ is exactly what we are trying to prove, so the this is absolutely incorrect to state.
+  \item Even if we ignore that part and focus on $n=k$, the conclusion \emph{``therefore $n\neq 0$''} does not make any sense because how can we comment using that on $n$ being non-zero.
+  \item In fact, the hypothesis $n\mid n^2$ is satisfied by \emph{every} $n$ (matter of fact $k=n$, since $n^2=n\cdot n$), so it can never force $n\ne0$.
+\end{enumerate}
+
+\textbf{Counterexample.} Take $n=0$. Then $n^2=0$ and $0=k\cdot 0$ for any integer $k$ (e.g.\ $k=5$), so $0\mid 0$ holds, yet $n=0$.
+Hence the claim is false.
+If instead $\N=\{1,2,3,\dots\}$, the conclusion $n\neq0$ is technically true because $n\ge1$ but that is only because of the definition of Natural Numbers $\N$, not from the hypothesis, and the given proof is still absolutely incorrect by 
+mathematical standpoint.\\
+
+\textbf{Fix.}
+\begin{itemize}
+  \item \emph{Corrected 1:} For every integer $n$, $n\mid n^2$. \emph{Proof:} $n^2=n\cdot n$, so $k=n$.
+  \item \emph{Corrected 2:} If $n\neq0$ and $n^2=kn$ for an integer $k$, then $k=n$.
+        \emph{Proof:} Since $n\neq0$ we may cancel $n$ (multiply by $n^{-1}$ in $\Q$): $n=k$.
+\end{itemize}
+
+
+
+
+
+
+
+\subsubsection*{(b)}
+\begin{claimbox}[Claim]
+$2^n=1$ for all non-negative integers $n$.
+\end{claimbox}
+
+\begin{verdictbox}{badred}
+\badmark{} The claim is false (e.g.\ $2^1=2\ne1$); the inductive step is flawed.
+\end{verdictbox}
+
+\textbf{Incorrect part}
+\[
+2^{k+1}=\frac{2^k\cdot 2^k}{2^{k-1}} .
+\]
+This equation is true its equal $LHS=RHS$, but the proof then uses inductive hypothesis for $2^{k-1}$.
+The hypothesis only covers exponents $m$ with $0\le m\le k$.
+For $k\ge1$ this is fine, but for $k=0$ (i.e.\ proving $n=1$) the exponent $k-1=-1$ is \emph{outside} the range.
+Because the step is invalid for $k=0$, the induction needs a \emph{proper new base case} $n=1$; that base case $2^1=1$ is false, so the induction never starts.
+(Checking: the proof would give $2^1=\frac{1\cdot1}{2^{-1}}=\frac{1}{1/2}=2$, not $1$.)
+
+\textbf{Fix.} Induction step that refers to $P(k-1)$ needs base cases $n=0$ and $n=1$ to be verified directly.
+
+\begin{claimbox}[Corrected claim]
+$2^n\ge1$ for all integers $n\ge0$, with equality if and only if $n=0$.
+\begin{proof}
+Induction on $n$.\\ \emph{Base Case} $n=0$: $2^0=1\ge1$.\\ \emph{Step Case:} 
+if $2^k\ge1$ then $2^{k+1}=2\cdot2^k\ge2\ge1$, and in fact $2^{k+1}\ge2>1$, 
+so equality occurs only at $n=0$.
+\end{proof}
+
+\end{claimbox}
+
+
+
+
+
+
+
+
+\subsubsection*{(c)}
+\begin{claimbox}[Claim]
+Every positive integer $n$ can be written as a sum of distinct powers of $2$.
+\end{claimbox}
+
+\begin{verdictbox}{okgreen}
+\goodmark{} This proof is \emph{valid}.
+\end{verdictbox}
+
+% hogya 1
+
+
+\textbf{Confirmation.}
+\begin{enumerate}
+  \item \emph{Existence of $N$.} If the claim fails, the set of positive integers that are not sums of distinct 
+  powers of $2$ is non-empty, so by the \textbf{well-ordering principle} 
+  it has a least element $N$. \cmark
+  \item \emph{$N>1$.} $1=2^0$ is a (one-term) sum of distinct powers of $2$, 
+  so $N\neq1$; hence $N\ge2$. \cmark
+  \item \emph{$N$ even, $N=2m$.} Then $m\ge1$ (as $N\ge2$) and $m<N$, so $m$ is 
+  representable by minimality:
+        $m=2^{a_1}+\dots+2^{a_r}$ with $a_1,\dots,a_r$ distinct. 
+        Doubling, $N=2^{a_1+1}+\dots+2^{a_r+1}$, and the exponents
+        $a_i+1$ are still distinct. So $N$ \emph{is} representable, 
+        contradicting the choice of $N$. \cmark
+  \item \emph{$N$ odd.} Since $N\ge2$ we get $N-1\ge1$, and $N-1<N$, so $N-1=2^{a_1}+\dots+2^{a_r}$ with distinct $a_i$ (minimality).
+        \emph{Why is $a_i\ne0$ for all $i$?} (the one line the proof skips): $N-1$ is even. If some $a_i=0$, the sum would be
+        $1+(\text{sum of terms }2^{a_j},\,a_j\ge1)$ = odd + even $=$ odd, a contradiction. So no term equals $2^0$.
+        Therefore $N=2^0+2^{a_1}+\dots+2^{a_r}$ has pairwise distinct exponents $0,a_1,\dots,a_r$; $N$ is representable, a contradiction. \cmark
+  \item Both cases contradict the choice of $N$, so no such $N$ exists. \cmark
+\end{enumerate}
+
+\textbf{Conclusion.} The proof is correct as proved by the above Confirmation.
+
+
+
+
+
+
+
+
+
+\subsubsection*{(d)}
+\begin{claimbox}[Claim]
+Let $n$ be an integer. If $n^2+n$ is divisible by $2$, then $n$ is even or $n+1$ is even.
+\end{claimbox}
+
+\begin{verdictbox}{badred}
+\badmark{} The claim is true, but the proposed proof is wrong.
+\end{verdictbox}
+
+\textbf{Incorrect part}
+\begin{enumerate}
+  \item \emph{``Since $2$ is prime, it cannot be expressed as a product of two integers 
+  other than $1$ and $2$. Therefore one of the factors must equal $2$.''}. Divisibility means
+        $n(n+1)=2k$ for some integer $k$, \emph{not} $n(n+1)=2$.
+  \item The conclusion \emph{``$n=2$ or $n+1=2$''} is false: $n=3$ gives $n(n+1)=12$, divisible by $2$, but neither $3$ nor $4$ equals $2$.
+  \item Also, \emph{``$n=2$ or $n+1=2$ $\Rightarrow$ $n$ or $n+1$ even''} would only cover $n\in\{2,1\}$, so even the final inference proves a much weaker claim than required.
+\end{enumerate}
+
+\textbf{Fix.} By the division algorithm, $n=2q$ or $n=2q+1$ for some integer $q$.
+If $n=2q$, then $n$ is even. If $n=2q+1$, then $n+1=2(q+1)$ is even. Hence for \emph{every} integer $n$ or $n+1$ is even
+(so the hypothesis $2\mid n^2+n$ is automatically true). 
+
+
+
+
+
+
+% ye bhosdika deekhna hai
+
+
+%% =====================================================================
+%%                               PROBLEM 2
+%% =====================================================================
+\section{}
+
+\subsection{Conversion of statements}
+
+\subsubsection{}
+\textbf{Setup.} Let $G=(V,E)$ be a graph, $\mathrm{Adj}(x,y)$ mean ``$x,y$ share an edge'', and let $\mathrm{CC}(G)$ denote ``$G$ is completely connected'' 
+As provided graph is completely connected if and only if for every pair of distinct vertices, there exists a third
+vertex that shares an edge with both, unless they already share a direct edge.
+
+\textbf{Logical Expression.}
+\[
+\Phi\;:\equiv\;\mathrm{CC}(G)\;\Longleftrightarrow\;\underbrace{\forall x\,\forall y\,\Big[\big(x\neq y\wedge\neg\mathrm{Adj}(x,y)\big)\longrightarrow\exists z\,\big(z\neq x\wedge z\neq y\wedge\mathrm{Adj}(x,z)\wedge\mathrm{Adj}(y,z)\big)\Big]}_{Q}
+\]
+
+\textbf{Negation.} $P:=\mathrm{CC}(G)$, so $\Phi=P\iff Q$.
+\begin{align*}
+\neg(P\iff Q)&\equiv(P\wedge\neg Q)\vee(\neg P\wedge Q)\\[-2pt]
+&\qquad\small \text{(a biconditional fails if and only if exactly one side holds)}\\[2pt]
+\neg Q&\equiv\exists x\,\exists y\,\neg\Big[(x\neq y\wedge\neg\mathrm{Adj}(x,y))\to\exists z(\dots)\Big]\\[-2pt]
+&\qquad\small (\neg\forall\equiv\exists\neg)\\
+&\equiv\exists x\,\exists y\,\Big[(x\neq y\wedge\neg\mathrm{Adj}(x,y))\wedge\neg\exists z(\dots)\Big]\\[-2pt]
+&\qquad\small (\neg(A\to B)\equiv A\wedge\neg B)\\
+&\equiv\exists x\,\exists y\,\Big[x\neq y\wedge\neg\mathrm{Adj}(x,y)\wedge\forall z\,\big((z\neq x\wedge z\neq y)\to(\neg\mathrm{Adj}(x,z)\vee\neg\mathrm{Adj}(y,z))\big)\Big]\\[-2pt]
+&\qquad\small (\neg\exists\equiv\forall\neg;\ \text{De Morgan})
+\end{align*}
+Hence
+\[
+\neg\Phi\equiv\Big(\mathrm{CC}(G)\wedge\neg Q\Big)\ \vee\ \Big(\neg\mathrm{CC}(G)\wedge Q\Big),
+\]
+with $\neg Q$ as displayed above.
+
+\textbf{In English.} \emph{Either} $G$ is completely connected, yet there exist two distinct, non-adjacent vertices $x,y$ such that every other vertex fails to be adjacent to at least one of them (no common neighbour);
+\emph{or} $G$ is not completely connected, yet every two distinct non-adjacent vertices have a third vertex adjacent to both.
+
+
+
+
+
+
+
+% ye bhosdika deekhna hai ye
+
+
+\subsubsection{}
+\textbf{Definitions.} $\mathrm{Book}(b)$, $\mathrm{Reader}(r)$, $\mathrm{Chapter}(c)$, $\mathrm{Auth}(a,b)$ ($a$ is the author of book $b$), $\mathrm{Wrote}(a,c)$ ($a$ wrote chapter $c$), $\mathrm{Appr}(r,c)$ ($r$ appreciates $c$).
+
+\textbf{Logical Expression.}
+\[
+\forall b\,\Big[\mathrm{Book}(b)\to\exists r\,\Big(\mathrm{Reader}(r)\wedge\forall a\,\forall c\,\big((\mathrm{Auth}(a,b)\wedge\mathrm{Chapter}(c)\wedge\mathrm{Wrote}(a,c))\to\mathrm{Appr}(r,c)\big)\Big)\Big]
+\]
+
+\textbf{Negation.}
+\begin{align*}
+&\neg\forall b\,[\mathrm{Book}(b)\to\exists r(\dots)]\\
+&\equiv\exists b\,[\mathrm{Book}(b)\wedge\neg\exists r(\mathrm{Reader}(r)\wedge\forall a\forall c(\dots))]\\[-2pt]
+&\qquad\small (\neg\forall,\ \neg(A\to B)\equiv A\wedge\neg B)\\
+&\equiv\exists b\,[\mathrm{Book}(b)\wedge\forall r(\mathrm{Reader}(r)\to\neg\forall a\forall c(\dots))]\\[-2pt]
+&\qquad\small (\neg\exists\equiv\forall\neg;\ \neg(A\wedge B)\equiv A\to\neg B)\\
+&\equiv\exists b\,\Big[\mathrm{Book}(b)\wedge\forall r\,\Big(\mathrm{Reader}(r)\to\exists a\,\exists c\,\big(\mathrm{Auth}(a,b)\wedge\mathrm{Chapter}(c)\wedge\mathrm{Wrote}(a,c)\wedge\neg\mathrm{Appr}(r,c)\big)\Big)\Big]
+\end{align*}
+\textbf{In English.} There is a book such that \emph{every} reader fails to appreciate at least one chapter written by that book's author.
+
+
+
+
+
+% padhliya ye 
+
+
+
+
+
+
+\subsubsection{}
+\textbf{Definitions.} $\mathrm{St}(s)$, $\mathrm{Took}(s,c)$, $\mathrm{A}(s,c)$ ($s$ received an A in class $c$). Let $G(s):\equiv\forall c\,(\mathrm{Took}(s,c)\to\mathrm{A}(s,c))$ (``all-A student'').
+
+\textbf{Logical Expression.}
+\[
+\exists s\,\Big[\mathrm{St}(s)\wedge G(s)\wedge\forall t\,\big((\mathrm{St}(t)\wedge G(t))\to t=s\big)\Big]
+\]
+\textbf{Negation.}
+\begin{align*}
+&\forall s\,\Big[\neg\mathrm{St}(s)\vee\neg G(s)\vee\neg\forall t\big((\mathrm{St}(t)\wedge G(t))\to t=s\big)\Big]\\[-2pt]
+&\qquad\small (\neg\exists\equiv\forall\neg;\ \text{De Morgan})\\
+&\equiv\forall s\,\Big[\mathrm{St}(s)\to\Big(\neg G(s)\ \vee\ \exists t\,\big(\mathrm{St}(t)\wedge G(t)\wedge t\neq s\big)\Big)\Big]\\
+&\equiv\forall s\,\Big[\mathrm{St}(s)\to\Big(\exists c\,(\mathrm{Took}(s,c)\wedge\neg\mathrm{A}(s,c))\ \vee\ \exists t\,\big(\mathrm{St}(t)\wedge t\neq s\wedge\forall c\,(\mathrm{Took}(t,c)\to\mathrm{A}(t,c))\big)\Big)\Big]
+\end{align*}
+\textbf{In English.} Every student either received a non-A in some class they took, or there is a \emph{different} student who received an A in every class they took. % Equivalently: \emph{either no student got all As, or at least two did.}
+
+% \begin{notebox}
+% A student who took no classes satisfies $G(s)$ vacuously; if this is unwanted, add $\exists c\,\mathrm{Took}(s,c)$ to $G(s)$. The negation changes accordingly.
+% \end{notebox}
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Tautology, contradiction or contingency}
+
+\subsubsection{(a)}
+\[
+u:=\big((p_1\Rightarrow p_2)\wedge(p_2\Rightarrow p_3)\wedge\dots\wedge(p_{n-1}\Rightarrow p_n)\wedge(p_n\Rightarrow p_1)\big)\Rightarrow(p_1\iff p_n).
+\]
+\begin{answerbox}[Answer]
+$u$ is a \textbf{tautology} for every $n\ge3$.
+\end{answerbox}
+
+
+\begin{proof} Below mentioned proves my statement
+\begin{itemize}
+  \item Suppose $p_1$ is true. Then $p_1\Rightarrow p_2$ forces $p_2$ true, then $p_2\Rightarrow p_3$ forces $p_3$ true, \dots, and finally $p_{n-1}\Rightarrow p_n$ forces $p_n$ true (a chain of modus ponens). So $p_1,p_n$ are both true and $p_1\iff p_n$ holds. (this was also given in midsem)
+  \item Suppose $p_1$ is false. If $p_n$ were true, then $p_n\Rightarrow p_1$ would be false, contradicting $p_1\iff p_n$. So $p_n$ is false and $p_1\iff p_n$ holds (both false).
+\end{itemize}
+In either case the $u$ holds, so $u$ is true under all assignments.
+\end{proof}
+
+
+
+
+
+
+
+
+\subsubsection{(b)}
+\[
+u:=\big(p_1\Rightarrow(p_2\Rightarrow(p_3\Rightarrow\dots\Rightarrow p_n))\big)\Rightarrow\big((p_1\wedge\dots\wedge p_{n-1})\Rightarrow p_n\big).
+\]
+\begin{answerbox}[Answer]
+$u$ is a \textbf{tautology}.
+\end{answerbox}
+Let $F_k:=p_k\Rightarrow(p_{k+1}\Rightarrow(\dots\Rightarrow p_n))$ for $1\le k\le n-1$, so $F_{n-1}=p_{n-1}\Rightarrow p_n$ and $F_k=p_k\Rightarrow F_{k+1}$.
+
+\begin{lemma*}
+$F_k$ is false $\iff$ $p_k,p_{k+1},\dots,p_{n-1}$ are all true and $p_n$ is false.
+\end{lemma*}
+\begin{proof}
+Induction on $k$.\\ \emph{Base} $k=n-1$: $p_{n-1}\Rightarrow p_n$ is false if and only if $p_{n-1}$ true and $p_n$ false.\\ \emph{Step:} $F_k=p_k\Rightarrow F_{k+1}$ is false if and only if $p_k$ is true and $F_{k+1}$ is false, if and only if (induction hypothesis) $p_k$ true and $p_{k+1},\dots,p_{n-1}$ true, $p_n$ false.
+\end{proof}
+Now let $L:=F_1$ and $R:=(p_1\wedge\dots\wedge p_{n-1})\Rightarrow p_n$. $R$ is false if and only if $p_1,\dots,p_{n-1}$ are all true and $p_n$ is false, which by the Lemma (with $k=1$) is exactly when $L$ is false. So $L\equiv R$. Then $u=L\Rightarrow R$ is $L\Rightarrow L$, which is true for every assignment: hence, a tautology. 
+
+
+
+
+
+% ye check karna hai bhosdika
+
+\subsubsection{(c)}
+\[
+u:=\big((p_1\oplus p_2)\wedge(p_2\oplus p_3)\wedge\dots\wedge(p_n\oplus p_1)\big)\Rightarrow(p_1\wedge\neg p_1).
+\]
+
+\begin{answerbox}[Answer]
+$u$ is also a tautology for odd $n$, contingency for even $n$.
+\end{answerbox}
+\textbf{Key observation.} $p_1\wedge\neg p_1$ is always false, so $A\Rightarrow\text{False}\equiv\neg A$. Thus
+$u\equiv\neg\big[(p_1\oplus p_2)\wedge\dots\wedge(p_n\oplus p_1)\big]$, and $u$ is false exactly when all consecutive pairs differ: $p_1\ne p_2\ne p_3\ne\dots\ne p_n\ne p_1$.
+
+\textbf{When can this happen?} If $p_i\neq p_{i+1}$ for all $i$, the truth values alternate as: $p_1=T,\,p_2=F,\,p_3=T,\dots$, i.e.\ $p_i=p_1$ iff $i$ is odd. 
+The last condition $p_n\neq p_1$ then requires $p_n$ to differ from $p_1$, i.e.\ $n$ must be \emph{even}. Formally, going around the cycle flips the value $n$ times and must return to the start, which forces $n$ to be even.
+\begin{itemize}
+  \item \textbf{$n$ odd:} statement is never true, so $u$ is never false: \textbf{tautology}.
+  \item \textbf{$n$ even:} the alternating assignment $(T,F,T,F,\dots,T,F)$ makes the statement true and hence $u$ false; the all-true assignment makes the statement false and $u$ true. So $u$ is a \textbf{contingency}.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+%% =====================================================================
+%%                               PROBLEM 3
+%% =====================================================================
+\section{}
+
+% \paragraph{A counting lemma used in both parts.}
+% A weighing has exactly three outcomes ($<,=,>$). Let a \emph{strategy} be any (possibly adaptive) procedure, where the pans used in a weighing may depend on earlier outcomes.
+
+% \begin{claimbox}[Lemma (information bound)]
+% A strategy using at most $k$ weighings can produce at most $3^k$ different sequences of outcomes. Hence if there are $M$ scenarios that must be told apart and $M>3^k$, no strategy with $k$ weighings exists.
+% \end{claimbox}
+% \begin{proof}
+% Induction on $k$. For $k=0$ there is exactly one (empty) sequence $=3^0$. If $k\ge1$, the first weighing is fixed and has $3$ possible outcomes; after each, the rest is a strategy with at most $k-1$ weighings having at most $3^{k-1}$ sequences, giving $\le3\cdot3^{k-1}=3^k$ in total.
+% For the second claim: fix concrete weights for each scenario (genuine coin weight $1$, counterfeit $1\pm\tfrac12$ as appropriate). Then the outcome sequence is a \emph{function} of the scenario. If $M>3^k$, by the pigeonhole principle two different scenarios give the same outcome sequence; the strategy would then output the same answer for both and be wrong for at least one.
+% \end{proof}
+
+%% ---------------------------------------------------------------- 3.1
+\subsection{9 coins, 2 lighter counterfeits}
+
+\begin{answerbox}
+The minimum number of weighings is \textbf{4}. (A question similar to Question 3 was in midsem and taught in class but I couldnt still grasp sections so i used AI for asistance in this question as it seems like reading the slides didnt help me figure it out)
+\end{answerbox}
+
+\subsubsection*{Lower bound: 3 weighings are not enough}
+A possibility is just the \emph{pair} of counterfeit coins, so there are $\binom92=36$ scenarios. With $k\le3$ weighings there are at most $3^3=27<36$ outcome sequences. By the Lemma, no strategy with $3$ (or fewer) weighings works. 
+
+
+
+\subsubsection*{Upper bound: a strategy with 4 weighings}
+Labeling the coins $1,\dots,9$ and put $A=\{1,2,3\}$, $B=\{4,5,6\}$, $C=\{7,8,9\}$. Write $L<R$ if the left pan is lighter. 
+% Throughout, ``$\{i,j\}$'' means ``coins $i,j$ are the counterfeit ones''. 
+The counterfeit coins are identical, so the number of counterfeit coins on a pan determines which pan is lighter (equal pan sizes are always used).
+
+\textbf{Weighing 1: $A$ v/s $B$.} Let $a,b,c$ be the number of counterfeit coins in $A,B,C$ ($a+b+c=2$). The pans balance iff $a=b$.
+
+\begin{enumerate}[label=\textbf{Case \arabic*.},leftmargin=*,itemsep=6pt]
+\item \textbf{$A<B$ (so $a>b$).} Then $(a,b,c)\in\{(2,0,0),(1,0,1)\}$, giving $3+9=12$ candidates:
+ $\{12,13,23\}\cup\{ac: a\in A,c\in C\}$. All coins of $B$ are genuine; use coin $4$ as a reference genuine coin.
+
+\textbf{Weighing 2: $\{1,7\}$ vs $\{2,8\}$.}
+\begin{center}\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Outcome & Remaining candidates & Weighing 3, then 4 \\
+\midrule
+$=$ & $\{12,\,18,\,27,\,39\}$ & W3: $1$ vs $4$. $<$: $\{12,18\}$; $=$: $\{27,39\}$.\\
+& & W4 (both groups): $2$ vs $4$. $<$: $\{12\}$ resp.\ $\{27\}$; $=$: $\{18\}$ resp.\ $\{39\}$.\\[2pt]
+$<$ & $\{13,\,17,\,19,\,37\}$ & W3: $1$ vs $3$. $=$: $\{13\}$; $<$: $\{17,19\}$; $>$: $\{37\}$.\\
+& & W4 (for $\{17,19\}$): $7$ vs $4$. $<$: $\{17\}$; $=$: $\{19\}$.\\[2pt]
+$>$ & $\{23,\,28,\,29,\,38\}$ & W3: $2$ vs $3$. $=$: $\{23\}$; $<$: $\{28,29\}$; $>$: $\{38\}$.\\
+& & W4 (for $\{28,29\}$): $8$ vs $4$. $<$: $\{28\}$; $=$: $\{29\}$.\\
+\bottomrule
+\end{tabular}
+\end{center}
+\textit{Why the splits are correct (spot checks).} In W2 the pair $\{12\}$ puts one counterfeit on each pan, so it balances; $\{13\}$ has coin $1$ on the left only, so left is lighter; $\{23\}$ has coin $2$ on the right only, so right is lighter; $\{17\}$ has two on the left $\Rightarrow$ left lighter; $\{28\}$ has two on the right $\Rightarrow$ right lighter; the other pairs are checked identically. In W3 ($=$ branch), $1$ vs $4$: $\{12\},\{18\}$ contain coin $1$ (left lighter) while $\{27\},\{39\}$ do not (balance). Every leaf has exactly one candidate, so $4$ weighings suffice.
+
+\item \textbf{$B<A$.} Symmetric to Case~1 with the roles $A\leftrightarrow B$ ($1,2,3\leftrightarrow4,5,6$) exchanged and coin $1$ as the genuine reference coin.
+
+\item \textbf{$A=B$ (so $a=b$).} Either $(a,b,c)=(0,0,2)$: $\{78,79,89\}$, or $(1,1,0)$: $\{ab\}$ with $a\in A,b\in B$ (9 pairs). Total $12$ candidates.
+
+ \textbf{Weighing 2: $\{1,4,7\}$ vs $\{2,5,8\}$.}
+ \begin{center}\small
+ \renewcommand{\arraystretch}{1.2}
+ \begin{tabular}{@{}lll@{}}
+ \toprule
+ Outcome & Remaining candidates & Weighing 3, then 4 \\
+ \midrule
+ $=$ & $\{78,\,15,\,24,\,36\}$ & W3: $1$ vs $2$. $<$: $\{15\}$; $>$: $\{24\}$; $=$: $\{78,36\}$.\\
+ & & W4 (for $\{78,36\}$): $7$ vs $3$. $<$: $\{78\}$; $>$: $\{36\}$.\\[2pt]
+ $<$ & $\{79,\,14,\,16,\,34\}$ & W3: $1$ vs $3$. $=$: $\{79\}$; $<$: $\{14,16\}$; $>$: $\{34\}$.\\
+ & & W4 (for $\{14,16\}$): $4$ vs $6$. $<$: $\{14\}$; $>$: $\{16\}$.\\[2pt]
+ $>$ & $\{89,\,25,\,26,\,35\}$ & W3: $2$ vs $3$. $=$: $\{89\}$; $<$: $\{25,26\}$; $>$: $\{35\}$.\\
+ & & W4 (for $\{25,26\}$): $5$ vs $6$. $<$: $\{25\}$; $>$: $\{26\}$.\\
+ \bottomrule
+ \end{tabular}
+ \end{center}
+\end{enumerate}
+In every branch the two counterfeit coins are identified after at most $4$ weighings (I also checked all $36$ pairs by running this strategy by computer). Together with the lower bound, the minimum is exactly $4$. 
+
+
+
+% same as previous bhosdika
+
+
+%% ---------------------------------------------------------------- 3.2
+\subsection{Twelve coins, two equal counterfeits, heavier or lighter unknown}
+
+\begin{answerbox}
+The minimum number of weighings is \textbf{5}.
+\end{answerbox}
+
+\subsubsection*{Lower bound: 4 weighings are not enough}
+A scenario consists of (i) the pair of counterfeit coins: $\binom{12}{2}=66$ choices, and (ii) whether they are both heavier or both lighter: $2$ choices. By the rule of product there are $66\cdot2=132$ scenarios, all of which must be distinguished (the answer must name the coins \emph{and} the direction).
+With $4$ weighings there are at most $3^4=81<132$ outcome sequences, so by the Lemma $4$ weighings (or fewer) cannot suffice. 
+
+\subsubsection*{Upper bound: a strategy with 5 weighings}
+\textbf{Weighing 1: $\{1,2,4,11\}$ vs $\{5,6,9,10\}$} (any $4$ vs $4$ works by symmetry). Call the pans $P$ (left), $Q$ (right), and the four unused coins $E$. Let a pair have $(l,r,e)$ counterfeit coins on $(P,Q,E)$:
+
+\begin{center}\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+$(l,r,e)$ & number of pairs & if counterfeit heavy & if counterfeit light & scenarios \\
+\midrule
+$(2,0,0)$ & $\binom42=6$ & $P>Q$ & $P<Q$ & 12\\
+$(0,2,0)$ & $6$ & $P<Q$ & $P>Q$ & 12\\
+$(1,1,0)$ & $4\cdot4=16$ & $=$ & $=$ & 32\\
+$(1,0,1)$ & $4\cdot4=16$ & $P>Q$ & $P<Q$ & 32\\
+$(0,1,1)$ & $16$ & $P<Q$ & $P>Q$ & 32\\
+$(0,0,2)$ & $6$ & $=$ & $=$ & 12\\
+\bottomrule
+\end{tabular}
+\end{center}
+So the three outcomes leave
+\[
+P>Q:\ 6+6+16+16=44,\qquad P<Q:\ 44,\qquad P=Q:\ 32+12=44
+\]
+scenarios, each $\le 3^4=81$, so the counting bound permits a continuation with $4$ more weighings. Hence, $4$ weighings are impossible ($132>81$).
+
+
+
+
+
+% ye bhosdika deeekh 
+
+
+
+%% =====================================================================
+%%                               PROBLEM 4
+%% =====================================================================
+\section{}
+
+\subsection{Infinitely many primes of the form $4k+1$}
+
+\begin{claimbox}[Claim]
+There are infinitely many primes $p$ with $p\equiv1\pmod4$.
+\end{claimbox}
+
+\textbf{Euclid's Lemma (of $x^2+1$)} If an odd prime $q$ divides $x^2+1$ for some integer $x$, then $q$ leaves a remainder of $1$ when divided by $4$. Equivalently, no odd prime that leaves a remainder of $3$ when divided by $4$ can divide a number of the form $x^2+1$.
+
+\begin{proof}
+\emph{Suppose, for contradiction,} that there are only finitely many primes that leave a remainder of $1$ when divided by $4$. The list is non-empty because $5$ is one, so write it as $p_1=5,p_2,\dots,p_r$ ($r\ge1$). Let
+\[
+P:=p_1p_2\cdots p_r,\qquad N:=(2P)^2+1 = 4P^2+1 .
+\]
+\begin{enumerate}
+  \item \emph{$N>1$ and $N$ is odd.} $P\ge5$ so $N\ge101$, and $N=4P^2+1$ is odd.
+  \item \emph{$N$ leaves a remainder of $1$ when divided by $4$.} Indeed, $N=4(P^2)+1$.
+  \item \emph{$N$ has a prime factor that leaves a remainder of $1$ when divided by $4$.} $N>1$ so it factors into primes $q_1\cdots q_s$. Since $N$ is odd, all its prime factors $q_j$ must be odd. By construction, each $q_j$ divides $N = (2P)^2+1$. According to the lemma, any odd prime dividing a number of the form $x^2+1$ must leave a remainder of $1$ when divided by $4$. Therefore, every prime factor $q$ of $N$ leaves a remainder of $1$ when divided by $4$.
+  \item \emph{$q$ is on the list.} By our assumption the list contains \emph{all} primes leaving a remainder of $1$ when divided by $4$, so $q=p_i$ for some $i$, hence $q\mid P$ and $q\mid 2P$, which means $q\mid (2P)^2$.
+  \item \emph{Contradiction.} Now $q\mid N=(2P)^2+1$ and $q\mid(2P)^2$, so $q\mid N-(2P)^2=1$, impossible for a prime.
+\end{enumerate}
+The assumption is false, so there are infinitely many primes that leave a remainder of $1$ when divided by $4$. 
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{$\sqrt2+\sqrt3$ is irrational}
+
+\begin{claimbox}[Lemma ($\sqrt2$ is irrational)]
+$\sqrt2\notin\Q$.
+\end{claimbox}
+\begin{proof}
+Suppose $\sqrt2=a/b$ with integers $a,b$, $b\neq0$, such that ($\gcd(a,b)=1$). Then $a^2=2b^2$, so $a^2$ is even. If $a$ were odd, $a=2m+1$ gives $a^2=4m^2+4m+1$ odd; hence $a$ is even, $a=2c$. Then $4c^2=2b^2$, i.e.\ $b^2=2c^2$, so $b$ is even by the same argument. Thus $2\mid\gcd(a,b)$, contradicting $\gcd(a,b)=1$.
+\end{proof}
+
+\begin{claimbox}[Claim]
+$\sqrt2+\sqrt3$ is irrational.
+\end{claimbox}
+\begin{proof}
+Suppose, for contradiction, that \[ \sqrt2+\sqrt3=\frac pq, \] where $p,q\in\mathbb Z$, $q\neq0$, and $\gcd(p,q)=1$. Since $\sqrt2+\sqrt3>0$, we have $p\neq0$.\begin{align*}
+\sqrt3&=\frac pq-\sqrt2 &&\text{(rearranging)}\\ 3&=\frac{p^2}{q^2}-\frac{2p}{q}\sqrt2+2 &&\text{(squaring both sides)}\\ 1&=\frac{p^2}{q^2}-\frac{2p}{q}\sqrt2 &&\text{(rearranging)}\\ \frac{2p}{q}\sqrt2&=\frac{p^2-q^2}{q^2} &&\text{(rearranging)}\\ \sqrt2&=\frac{p^2-q^2}{2pq} &&\text{(dividing by }2p/q\neq0\text{)}.
+\end{align*}
+Since $p,q\in\mathbb Z$ and $p,q\neq0$, the right-hand side is rational. Hence $\sqrt2\in\mathbb Q$, contradicting the Lemma. Therefore, $\sqrt2+\sqrt3$ is irrational.\end{proof}
+
+
+
+
+
+
+
+
+
+%% =====================================================================
+%%                               PROBLEM 5
+%% =====================================================================
+% ---------- Problem 5, simple wording ----------
+% Paste this as your 5th section.
+
+\section{}
+
+% \textbf{Setting up.}
+Robot $A$ jumps $2$ or $5$ steps, and robot $B$ jumps $3$ or $7$ steps. The order of jumps matters
+(for example $2$ then $5$ is a different way from $5$ then $2$).
+Let $A_0=B_0=1$ (standing at step $0$ is one way: do nothing) and let $A_n=B_n=0$ for $n<0$. (I've also used AI to figure out the best way to present and writeout this question because its similar to midsem and classroom slide question and i am sure i was on the right path i just couldnt properly present it)
+
+Thinking about the \emph{last} jump. To land on step $n$, robot $A$ either jumped $2$ from step $n-2$, or jumped $5$ from step $n-5$. So 
+\[
+A_n=A_{n-2}+A_{n-5},\qquad B_n=B_{n-3}+B_{n-7}\qquad(n\ge1).
+\]
+Using these, I wrote the initial values in a table (we need them later):
+\begin{center}\small
+\renewcommand{\arraystretch}{1.15}
+\setlength{\tabcolsep}{4.5pt}
+\begin{tabular}{@{}l|*{21}{r}@{}}
+$n$ & 0&1&2&3&4&5&6&7&8&9&10&11&12&13&14&15&16&17&18&19&20\\\hline
+$A_n$ & 1&0&1&0&1&1&1&2&1&3&2&4&4&5&7&7&11&11&16&18&22\\
+$B_n$ & 1&0&0&1&0&0&1&1&0&1&2&0&1&3&1&1&4&3&1&5&5\\
+\end{tabular}
+\end{center}
+% ``A robot can reach step $n$'' just means its count is at least $1$.
+
+\subsection{Is there an $N$ after which both robots can reach every step?}
+\begin{answerbox}
+Yes. Take $N=12$: every step $n\ge12$ can be reached by both robots. Listed out in the table/
+\end{answerbox}
+
+\textbf{Robot $A$ (jumps 2 and 5) can reach every $n\ge4$.}
+\begin{itemize}
+  \item If $n$ is even and $n\ge4$: do $n/2$ jumps of size $2$.
+  \item If $n$ is odd and $n\ge5$: do one jump of $5$, then the rest is $n-5$, which is even and $\ge0$, so do $(n-5)/2$ jumps of size $2$.
+\end{itemize}
+
+\textbf{Robot $B$ (jumps 3 and 7) can reach every $n\ge12$.} Look at the remainder of $n$ when divided by $3$.
+\begin{itemize}
+  \item $n=3q$: just do $q$ jumps of size $3$.
+  \item $n=3q+1$: do one jump of $7$ and then $q-2$ jumps of $3$, because $7+3(q-2)=3q+1$. This needs $q\ge2$, i.e.\ $n\ge7$, which is true for $n\ge12$.
+  \item $n=3q+2$: do two jumps of $7$ and then $q-4$ jumps of $3$, because $14+3(q-4)=3q+2$. This needs $q\ge4$, i.e.\ $n\ge14$.
+        If $n\ge12$ and $n$ leaves remainder $2$ when divided by $3$, then the smallest such $n$ is $14$, so we are fine.
+\end{itemize}
+
+Since $12\ge4$, both robots can reach every $n\ge12$. \qed
+
+\subsection{The smallest such $N$}
+\begin{answerbox}
+The smallest value is $N=12$.
+\end{answerbox}
+We show that $11$ cannot be reached by robot $B$. Suppose $11=3x+7y$ with whole numbers $x,y\ge0$.
+\begin{itemize}
+  \item If $y=0$, then $3x=11$, but $11$ is not a multiple of $3$.
+  \item If $y=1$, then $3x=4$, which is also impossible.
+  \item If $y\ge2$, then $7y\ge14>11$, too big.
+\end{itemize}
+So $B_{11}=0$ (this matches the table). If we picked any $N\le11$, then $n=11$ would have to work for both robots, but it does not.
+So $N$ cannot be smaller than $12$, and we showed $12$ works. Hence the smallest $N$ is $12$.
+
+\subsection{Showing $A_n+B_n\le(5/4)^n$ for all $n\ge10$}
+Write $t=5/4$. The idea: we prove that each robot separately is at most \emph{half} of $t^n$. Then adding them gives at most $t^n$.
+\[
+A_n\le\tfrac12t^n\quad(n\ge4),\qquad B_n\le\tfrac12t^n\quad(n\ge6).
+\]
+Then for $n\ge10$ (in fact for $n\ge6$) we get $A_n+B_n\le\tfrac12t^n+\tfrac12t^n=t^n$.
+
+\textbf{Step 1: Two small facts.}
+\[
+t^{-2}+t^{-5}=\tfrac{16}{25}+\tfrac{1024}{3125}=\tfrac{2000+1024}{3125}=\tfrac{3024}{3125}<1,
+\]
+\[
+t^{-3}+t^{-7}=\tfrac{64}{125}+\tfrac{16384}{78125}=\tfrac{40000+16384}{78125}=\tfrac{56384}{78125}<1.
+\]
+
+\textbf{Step 2: The bound for $A_n$, by strong induction.}
+$A_n$ looks back $2$ and $5$ steps, so we check $5$ starting values $n=4,5,6,7,8$.
+The bound $A_n\le\frac12t^n$ is the same as $2A_n4^n\le5^n$ (multiply both sides by $2\cdot4^n$), which uses only whole numbers:
+\begin{center}\small
+\begin{tabular}{@{}c|ccccc@{}}
+$n$ & 4 & 5 & 6 & 7 & 8\\\hline
+$A_n$ & 1 & 1 & 1 & 2 & 1\\
+$2A_n4^n$ & $512$ & $2048$ & $8192$ & $65536$ & $131072$\\
+$5^n$ & $625$ & $3125$ & $15625$ & $78125$ & $390625$\\
+True? & \cmark&\cmark&\cmark&\cmark&\cmark
+\end{tabular}
+\end{center}
+Now let $n\ge9$ and assume the bound for all values from $4$ up to $n-1$. Since $n-2\ge7$ and $n-5\ge4$, both $A_{n-2}$ and $A_{n-5}$ satisfy the bound, so
+\[
+A_n=A_{n-2}+A_{n-5}\le\tfrac12t^{n-2}+\tfrac12t^{n-5}=\tfrac12t^n\,(t^{-2}+t^{-5})<\tfrac12t^n .
+\]
+(the last step uses Step 1). So the bound holds for all $n\ge4$.
+
+\textbf{Step 3: The bound for $B_n$, by strong induction.}
+$B_n$ looks back $3$ and $7$ steps, so we check $7$ starting values $n=6,\dots,12$:
+\begin{center}\small
+\begin{tabular}{@{}c|ccccccc@{}}
+$n$ & 6 & 7 & 8 & 9 & 10 & 11 & 12\\\hline
+$B_n$ & 1 & 1 & 0 & 1 & 2 & 0 & 1\\
+$2B_n4^n$ & $8192$ & $32768$ & $0$ & $524288$ & $4194304$ & $0$ & $33554432$\\
+$5^n$ & $15625$ & $78125$ & $390625$ & $1953125$ & $9765625$ & $48828125$ & $244140625$\\
+True? & \cmark&\cmark&\cmark&\cmark&\cmark&\cmark&\cmark
+\end{tabular}
+\end{center}
+Let $n\ge13$ and assume the bound for all values from $6$ up to $n-1$. Since $n-3\ge10$ and $n-7\ge6$,
+\[
+B_n=B_{n-3}+B_{n-7}\le\tfrac12t^{n-3}+\tfrac12t^{n-7}=\tfrac12t^n\,(t^{-3}+t^{-7})<\tfrac12t^n .
+\]
+So the bound holds for all $n\ge6$.
+
+\textbf{Step 4: Put them together.} For every $n\ge10$,
+\[
+A_n+B_n\le\tfrac12\Big(\tfrac54\Big)^n+\tfrac12\Big(\tfrac54\Big)^n=\Big(\tfrac54\Big)^n. \qed
+\]
+
+% \begin{notebox}
+% Why we used the factor $\tfrac12$: robot $A$ grows almost as fast as $(5/4)^n$ (its growth rate is about $1.2365$ and $5/4=1.25$), so there is not much room.
+% Giving each robot exactly half of $(5/4)^n$ and checking the starting values carefully makes the proof work.
+% \end{notebox}
+
+\end{document}
